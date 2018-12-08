@@ -1,0 +1,271 @@
+***HW 5 Second Try
+
+***Problem 1
+use "\\files\users\rchicola\Desktop\travel.dta" 
+*(a) Run a clogit of transportation choice on travel time (10 points)
+clogit choice travel_time, group(id)
+*(b) What percentage of people in the data choose each of the four options? (10 points)
+tab choice option, cell nofreq
+tab option
+*Answer 25%: If equals 1 for all four options, then  1 |   6.90   7.50  3.57  7.02 |  25.00 
+
+
+*(c) What are the predicted probabilities with the clogit? (10 points)
+
+
+****THIS CORRESPONDS TO THE CATEGORY NOT TRAVEL TIME 
+***Air
+display exp(1*-.0560469 )/(exp(1*-.0560469 )+ exp(2*-.0560469 )+ exp(3*-.0560469 )+ exp(4*-.0560469 ))
+**Output=.27139324
+
+*Train
+display exp(2*-.0560469 )/(exp(1*-.0560469 )+ exp(2*-.0560469 )+ exp(3*-.0560469 )+ exp(4*-.0560469 ))
+**Output=.2566009
+
+*Bus
+display exp(3*-.0560469 )/(exp(1*-.0560469 )+ exp(2*-.0560469 )+ exp(3*-.0560469 )+ exp(4*-.0560469 ))
+**Output=.24261481
+
+*Car
+display exp(4*-.0560469 )/(exp(1*-.0560469 )+ exp(2*-.0560469 )+ exp(3*-.0560469 )+ exp(4*-.0560469 ))
+**Output=.22939104
+
+
+****THIS CORRESPONDS TO THE  TRAVEL TIME
+
+*i Air
+sum travel_time if option==1
+*Mean=2.228492  Beta -.0560469  
+
+display exp(2.228492*-.0560469 )/(exp(2.228492*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .34076919
+
+
+*ii Train
+sum travel_time if option==2
+*Mean=10.1381 
+display exp(10.1381 *-.0560469 )/(exp(2.228492*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .21874275
+
+*iii Bus
+sum travel_time if option==3
+*Mean=10.49103 
+display exp(10.49103  *-.0560469 )/(exp(2.228492*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .21445839
+
+
+*iv Car
+sum travel_time if option==4
+*Mean=9.553413 
+
+display exp(9.553413   *-.0560469 )/(exp(2.228492*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+
+*Outputs .22602967
+
+
+
+
+
+*(d) Suppose that planes get quicker, and that the average plane trip becomes one hour shorter. (12 points)
+
+*i Air
+display exp((2.228492-1)*-.0560469 )/(exp((2.228492-1)*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .3534699
+
+**Difference
+display (.3534699-.34076919)
+**Difference Output .01270071      OR 1.270071% more likely to Fly
+
+
+*ii Train
+display exp((10.1381) *-.0560469 )/(exp((2.228492-1)*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .21452846
+
+**Difference
+display (.21452846- .21874275)
+
+
+**Difference Output -.00421429   OR .42142%9 likely to take Train
+
+
+*iii Bus
+display exp((10.49103)  *-.0560469 )/(exp((2.228492-1)*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs .21032665
+
+**Difference
+display (.21032665-.21445839)
+
+**Difference Output -.00413174
+
+
+
+
+*iv Car
+display exp((9.553413)  *-.0560469 )/(exp((2.228492-1)*-.0560469 )+ exp(10.1381 *-.0560469 )+ exp(10.49103 *-.0560469 )+ exp(9.553413 *-.0560469 ))
+*Outputs  .22167499
+
+
+**Difference
+display (.22167499- .22602967)
+**Difference Output -.00435468
+
+
+
+
+
+*(e) Report the marginal effect of travel time on the likelihood that someone flies for someone making 
+*$20,000 a year and for someone making $80,000 a year. (12points)
+
+sum hh_inc
+**Asssuming hh_inc is annual HH income in thousands, cannot do $80,000 because the max is 72,000
+***Use 72,000 instead of 80,000
+gen hh_inc_traveltime=travel_time*hh_inc
+
+clogit choice travel_time hh_inc_traveltime,group(id)
+margins, dydx(travel_time)
+
+margins, dydx(hh_inc_traveltime)
+
+
+display (-.0004885 *20000 *2.228492)
+*OUtput -21.772367
+
+display (-.0004885 *80000 *2.228492)
+*OUtput-87.089467
+
+*estat mfx
+
+
+
+******Problem 2
+
+
+***Merge Data
+
+**** Quarterly GDP data into Year
+***The year_q has extra character attached to year so need to 
+
+*****Turn monthly data into quarterly
+ use "\\files\users\rchicola\Desktop\ur.dta" 
+
+gen Quarter =1 if (month==1 | month==2 | month==3)
+replace Quarter =2 if (month==4 | month==5 | month==6)
+replace Quarter =3 if (month==7 | month==8 | month==9)
+replace Quarter =4 if (month==10 | month==11 |month==12)
+
+
+collapse ur, by(year Quarter)
+
+save "\\files\users\rchicola\Desktop\URQuarter.dta", replace
+
+use "\\files\users\rchicola\Desktop\GDP_cleaned.dta" 
+*"C:\Users\rchicola\AppData\Local\Temp\11\STD00000000.tmp"
+egen Quarter = seq(), f(1) t(4)
+
+***Dive by 10 to get rig of extra 0
+gen year = (year_q- Quarter)/10
+
+
+*use "\\files\users\rchicola\Desktop\URQuarter.dta"
+
+merge m:1 year Quarter  using "\\files\users\rchicola\Desktop\URQuarter.dta"
+**Part A Using only data from 1950 through 2016, test for stationarity in both variables.
+*Ignore drifts and trends. (24 points)
+drop year_q
+drop _merge
+drop if growth==.
+drop if year==2017
+ save "\\files\users\rchicola\Desktop\GDP_cleaned_m.dta", replace
+ 
+use "\\files\users\rchicola\Desktop\GDP_cleaned_m.dta"
+ 
+* i. Suppose you are asked to regress UR on GDP growth. In order for this
+*regression to be meaningful, what needs to be true? (4 points)
+
+****We need to assum stationarity, variable distributiosstay constant throughout the
+**time series to avoid spurious coefficients and test statistics that are not meaningful
+
+
+gen t=_n
+tsset t
+
+
+gen ln_gdp=log(growth)
+gen ln_ur=log(ur)
+
+
+reg ln_gdp ln_ur
+reg ln_ur ln_gdp
+** Don't need to take log because its already growth
+
+reg ur growth
+
+*ii  Is UR stationary? (3 points)  IF the dfuller Test statistic is bigger than the Critical Value of the dfuller test
+* then it is stationary. If less than critical value, then it is not.
+
+dfuller growth
+* Growth dfuller test stat is -4.446 in larger than even the 1% critical value -3.459  so it is stationary
+dfuller ur
+
+*ur dfuller test stat is -1.849   which is smaller than even the 10% critical value of -2.570, so it is not stationary.
+*gen inf=l_cpi[_n]-l_cpi[_n-1]
+
+
+*iii If not, how many lags do you need to include for it to become stationary? (3points)
+
+
+
+*   d. takes difference between y(t) and y(t-1)
+gen dur=d.ur
+dfuller dur
+
+* not taking d. of growth because it is already stationary
+reg d.ur growth 
+
+
+***iv. Is GDP growth stationary? (3 points) 
+
+*Yes see above
+dfuller growth
+* Growth dfuller test stat is -4.446 in larger than even the 1% critical value -3.459  so it is stationary
+
+
+*v. If not, how many lags do you need to include for it to become stationary? (3points)
+
+*Don't need to do this because it is stationary
+
+*gen=dgrowth=d.growth
+*dfuller 
+
+*vi. Can you run a meaningful regression of UR and GDP given what you have
+*found above and any other evidence you may want to explore? If not, run
+*a model with transformations of the variables that would be meaningful. (8points)
+
+
+*Yes we can run a meaningful regression of UR as long as we take the the difference of UR to make it stationary.
+
+
+*(b) Run a VAR of UR on GDP growth.
+
+
+*i. Try this with 1-5 lags. Pick the best model according to the BIC and report
+*only those results. (10 points)
+
+***The model with the lowest BIC is prefererred
+var growth ur 
+var growth ur, lags(1/1)
+var growth ur, lags(1/2)
+var growth ur, lags(1/3)
+var growth ur, lags(1/4)
+var growth ur, lags(1/5)
+*  lag (1/5) has lowest BIC -->    SBIC              =   2.901701
+
+*var growth ur, lags(20)
+*var growth ur, lags(1/20)
+
+*ii. Does GDP growth Granger cause UR? (5 points)
+vargranger
+
+***The df Prob > Chi2 for both ur and growth are small/ significant.
+
+
