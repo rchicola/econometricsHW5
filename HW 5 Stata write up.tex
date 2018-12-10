@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage{amsmath, enumitem}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[margin=1in]{geometry}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{placeins}
+\usepackage[margin=1in]{geometry}
+
+
+\begin{document}
+
+\title{Economics 741
+Homework 5 Assignment \\
+\large Due 11 December 2017}
+\author{John Appert, Randall Chicola, Andrea Franz}
+\maketitle
+\section{Discrete Choice (44 points):} 
+\begin{enumerate}[label=\alph*]
+
+
+
+\item  (a) Run a clogit of transportation choice on travel time (10 points)\\
+
+See Table 1 and Reg Output choice:traveltime coefficient -.0560469
+
+
+
+% Start Output Table 1 for Part A
+\begin{table}[tbp] \centering
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\caption{CLOGIT Transp on travel time}
+\begin{tabularx}{\textwidth}{lCCC}
+
+\toprule
+{var}&{coef}&{stderr}&{N} \tabularnewline
+\midrule\addlinespace[1.5ex]
+choice:travel\_time&-.0560469&.016351&840 \tabularnewline
+\bottomrule \addlinespace[1.5ex]
+
+\end{tabularx}
+\end{table}
+% End Output Table 1 for Part A
+
+
+% Start Regression Output list Part A
+\begin{table}[tbp] \centering
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\begin{tabularx}{\textwidth}{lCCCCCCC}
+
+\toprule
+{var}&{coef}&{stderr}&{tstat}&{pval}&{ci\_lower}&{ci\_upper}&{N} \tabularnewline
+\midrule\addlinespace[1.5ex]
+choice:travel\_time&-.0560469&.016351&-3.427736&.0006086&-.0880943&-.0239995&840 \tabularnewline
+\bottomrule \addlinespace[1.5ex]
+
+\end{tabularx}
+\end{table}
+
+% End Regression Output list Part A
+
+
+\item
+
+(b) What percentage of people in the data choose each of the four options? (10 points)\\
+
+Couldn't get to output the tabulate, was getting the errors with the cell and nofreq options. Copied image of the table in Word. I tried eststo, latab, and tabstat to no avail. Table 2 is the only attempt that generated a table but it is not correct. The correct table was pasted into Word.\
+
+Answer 25 percent: If equals 1 for all four options, then  1 |   6.90   7.50  3.57  7.02 |  25.00 
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Option Percents Part B}
+\begin{tabular}{l*{2}{c}}
+\hline\hline
+            &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+            &\multicolumn{1}{c}{choice}&\multicolumn{1}{c}{choice}\\
+\hline
+choice      &                     &                     \\
+travel\_time &     -0.0560\sym{***}&     -0.0560\sym{***}\\
+            &     (-3.43)         &     (-3.43)         \\
+\hline
+\(N\)       &         840         &         840         \\
+\hline\hline
+\multicolumn{3}{l}{\footnotesize \textit{t} statistics in parentheses}\\
+\multicolumn{3}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\end{table}
+
+
+
+\item
+(c) What are the predicted probabilities with the clogit? (10 points)
+
+Try putting in excel then outputting to Latex, maybe that will work. 
+
+
+\item 
+(e) Report the marginal effect of travel time on the likelihood that someone 
+ies for
+someone making \$20,000 a year and for someone making \$80,000 a year. (12
+points)
+
+
+Interpretation: For Someone making 80,000, the marginal effect of travel time 2.6% less likely to fly.
+*This makes sense as the opportunity cost of productive activity is higher for higher income individuals.
+
+\section{Time Series}
+
+\end{enumerate}
+\end{document}

@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[margin=1in]{geometry}
+\begin{document}
+
+\begin{table}[tbp] \centering
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\caption{CLOGIT Transp on travel time}
+\begin{tabularx}{\textwidth}{lCCC}
+
+\toprule
+{var}&{coef}&{stderr}&{N} \tabularnewline
+\midrule\addlinespace[1.5ex]
+choice:travel\_time&-.0560469&.016351&840 \tabularnewline
+\bottomrule \addlinespace[1.5ex]
+
+\end{tabularx}
+\end{table}
+\end{document}
